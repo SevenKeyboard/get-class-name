@@ -1,0 +1,26 @@
+﻿#Requires AutoHotkey v2.0.0+
+;==============================================================
+; getClassName — Gets the window class name for a given HWND
+;
+; GitHub: https://github.com/SevenKeyboard/get-class-name
+; Author: SevenKeyboard Ltd. (2026)
+; License: The Unlicense
+;
+; Documentation / References:
+;   GetClassName function (winuser.h)
+;     https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getclassname
+;==============================================================
+class VersionManager_getClassName
+{
+    static _ := this._init()
+    static _init()    {
+        global
+        GETCLASSNAME_VERSION := "1.0.0"
+    }
+}
+getClassName(hWnd, nMaxCount:=1024)    { ;  MAX_CLASS_NAME
+    lpClassName:=buffer(2*nMaxCount,0)
+    return (dllCall("User32.dll\GetClassName", "Ptr",hWnd, "Ptr",lpClassName.Ptr, "Int",nMaxCount, "Int"))
+        ?strGet(lpClassName)
+        :""
+}
